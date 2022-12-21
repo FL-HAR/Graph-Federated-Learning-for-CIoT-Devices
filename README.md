@@ -1,7 +1,10 @@
 # Graph-Federated-Learning-for-CIoT-Devices
 
-![Alt text](imgs/fig4.png?raw=true "Title")
+![Alt text](imgs/graph_ex.png?raw=true "Title")
 
+![Alt text](imgs/example.png?raw=true "Title")
+
+![Alt text](imgs/fig4.png?raw=true "Title")
 # Citation
 
 @article{rasti2022graph,
