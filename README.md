@@ -5,9 +5,16 @@
   <img src="imgs/graph_ex.png" width="400">
 </p>
 
+<p align="center">
+   <img src="imgs/example.png" width="800">
+</p>
 
-<img src="imgs/example.png" width="500">
-<img src="imgs/fig4.png" width="500">
+<p align="center">
+  <img src="imgs/fig4.png" width="800">
+</p>
+
+
+
 
 # Citation
 
