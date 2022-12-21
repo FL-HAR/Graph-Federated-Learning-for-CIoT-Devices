@@ -3,6 +3,7 @@
 
 <p align="center">
   <img src="imgs/graph_ex.png" width="400">
+   <em>image_caption</em>
 </p>
 
 <p align="center">
