@@ -15,6 +15,7 @@
 </p>
 
 ## Requirements
+Please run the following codes before running the ``` main.py``` .
 ```
 !pip install tensorflow-federated==0.18.0
 !pip install pygsp==0.5.1
