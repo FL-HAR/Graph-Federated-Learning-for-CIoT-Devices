@@ -14,7 +14,12 @@
   <img src="imgs/fig4.png" width="800">
 </p>
 
+## Requirements
 
+```
+!pip install tensorflow-federated==0.18.0
+!pip install pygsp==0.5.1
+```
 
 
 # Citation
