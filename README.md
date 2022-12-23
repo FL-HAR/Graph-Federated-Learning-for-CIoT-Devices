@@ -15,7 +15,6 @@
 </p>
 
 ## Requirements
-
 ```
 !pip install tensorflow-federated==0.18.0
 !pip install pygsp==0.5.1
@@ -23,7 +22,7 @@
 
 
 # Citation
-
+```
 @article{rasti2022graph,
   title={Graph Federated Learning for CIoT Devices in Smart Home Applications},
   author={Rasti-Meymandi, Arash and Sheikholeslami, Seyed Mohammad and Abouei, Jamshid and Plataniotis, Konstantinos N},
@@ -31,3 +30,4 @@
   year={2022},
   publisher={IEEE}
 }
+```
