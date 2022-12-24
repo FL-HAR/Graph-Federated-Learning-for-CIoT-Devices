@@ -20,7 +20,11 @@ Please install the following packages before running ``` main.py``` .
 !pip install tensorflow-federated==0.18.0
 !pip install pygsp==0.5.1
 ```
-
+## How to run
+Simply rund the following code that specifies the report path, number of local updates, number of rounds, the graph used in the original paper, and label heterogeneity score.
+```
+main.py --save_path 'report' --E 3  --R 400 --paper_graph 'Y' --label_hetro 5
+```
 
 # Citation
 ```
