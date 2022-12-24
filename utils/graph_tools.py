@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 import os
+from collections import defaultdict
 
 root = os.getcwd()
 
@@ -183,3 +184,14 @@ def graph_ex(N_clients=30):
     fig.tight_layout()
 
     return Gph
+  
+def convert(a):
+  """
+converts from adjacency matrix to adjacency list
+  """
+    adjList = defaultdict(list)
+    for i in range(len(a)):
+        for j in range(len(a[i])):
+                       if a[i][j]== 1:
+                           adjList[i].append(j)
+    return adjList
