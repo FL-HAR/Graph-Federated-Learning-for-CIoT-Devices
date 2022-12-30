@@ -8,6 +8,7 @@ root = os.getcwd()
 sys.path.append(root+'/utils')
 sys.path.append(root+'/network')
 
+from model_updates import local_update, server_update
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -22,7 +23,7 @@ def main():
     parser.add_argument('--batch_size', type=int, default=32, help='batch size for local training')
     parser.add_argument('--E', type=int, default=3, help='Local training rounds')
     parser.add_argument('--R', type=int, default=400, help='Total number of communication rounds in the framework')
-    parser.add_argument('--N_clients', type=int, default=100, help='number of clients in the framework') ## for the paper graph this must be set to 20
+    parser.add_argument('--N_clients', type=int, default=30, help='number of clients in the framework') ## for the paper graph this must be set to 20
     parser.add_argument('--paper_graph', type=str, default='N', help='whether to use the graph used in the original paper or a random sensor graph')
     parser.add_argument('--save_path', type=str, default='report', help='path to save results')
     parser.add_argument('--label_hetro', type=int, default=4, help='indicates label heterogeneity: 4 means each client only has 4 labels of the data')
@@ -114,68 +115,32 @@ def main():
         client_xdata = np.expand_dims(data_train_new[client],axis =-1)
         client_ydata = label_train_new[client]
     ############## FedFilt for multiple models #####################################
-    ################################################################################
+    ############### Local updates####################################################
         for m in range (1,model_number):
           model_Fedfilt.set_weights(Gr.unflatten(G_list[m][client],global_var))
 
-          for epoch in range(E):
-            model_Fedfilt.fit(client_xdata, client_ydata ,batch_size=Batch_size,
-      epochs=1,
-      verbose=0,
-      callbacks=None,
-      validation_split=0.0,
-      validation_data=None,
-      shuffle=True)
-          client_var_Fedfilt = model_Fedfilt.get_weights()
+          client_var_Fedfilt = local_update(E, model_Fedfilt,client_xdata,client_ydata,Batch_size)
           client_var_flat = Gr.flatten(client_var_Fedfilt)
           client_var_flat = np.array(client_var_flat)
           G_list[m][client,:] = client_var_flat
 
     ################################################################################
         model_FedAvg.set_weights(global_var_FedAvg)
-        for epoch in range(E):      
-          info = model_FedAvg.fit(client_xdata, client_ydata ,batch_size=Batch_size,
-      epochs=1,
-      verbose=0,
-      callbacks=None,
-      validation_split=0.0,
-      validation_data=None,
-      shuffle=True,)
-
-        client_var_FedAvg = model_FedAvg.get_weights()
-      
+        client_var_FedAvg = local_update(E, model_FedAvg,client_xdata,client_ydata,Batch_size)
         client_num += 1
     ############# FedAvg  ##########################################################
-        Delta = []
-        for (item1, item2) in zip(client_var_FedAvg, global_var_FedAvg):
-            Delta.append( item2 - item1)
+        global_var_FedAvg = server_update(method='FedAvg',delta_sum=Delta_sum, N_active_clients=N_active_clients, client_update=client_var_FedAvg, global_update=global_var_FedAvg)
 
-
-        sum_list =[]
-        if Delta_sum is None:
-          # weight = data_size / total_data_size
-          weight = 1/N_active_clients
-          Delta_sum = [weight * x for x in Delta]
-        else:
-          for (item1, item2) in zip(Delta, Delta_sum):
-            sum_list.append( weight*item1 + item2)
-
-          Delta_sum = sum_list
-      global_temp = []
-      for (item1, item2) in zip(global_var_FedAvg, Delta_sum):
-            global_temp.append( item1 - item2)  
-
-      global_var_FedAvg = global_temp
     ################# Fedfilt ###################################################### 
       for m in range(1,model_number):
         if m ==1:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,args.mu_param,0) 
+          G_list[m] = server_update(method='G-Fedfilt',Graph=Gph, Gradient_list=G_list[m], mu=args.mu_param)
         if m == 2:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,0.1,0)
+          G_list[m] = server_update(method='G-Fedfilt',Graph=Gph, Gradient_list=G_list[m], mu=0.1)
         if m == 3:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,1,0)
+          G_list[m] = server_update(method='G-Fedfilt',Graph=Gph, Gradient_list=G_list[m], mu=1)
         if m == 4:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,100,0)
+          G_list[m] = server_update(method='G-Fedfilt',Graph=Gph, Gradient_list=G_list[m], mu=100)
     ################################################################################
 
     ########## FedFilt Evaluation ##################################################
