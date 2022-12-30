@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 import os
-from collections import defaultdict
 
 root = os.getcwd()
 
@@ -128,7 +127,7 @@ def plot_gfilter(func,mu_s1,mu_s2,Graf):
     plt.savefig('filter_0',dpi=200)
   # plt.title("Filter Frequency Response")
 
-def graph_ex(N_clients=30):
+def graph_ex(N_clients=30,param=1):
 
     """
     An example of a graph 
@@ -153,11 +152,11 @@ def graph_ex(N_clients=30):
     fig.tight_layout()
     plt.pause(1)
     print(2*("|"+100*" "+"|\n"))
-    print(30*"#"+" the graph filter with parameters 1 and 0 "+ 30*"#")
+    print(30*"#"+" the graph filter with parameters "+str(param)+ 30*"#")
     font = {
         'size'   : 25}
     plt.rc('font', **font)
-    plot_gfilter(h_s,10,0,Gph)
+    plot_gfilter(h_s,param,0,Gph)
     font = {
         'size'   : 10}
     plt.rc('font', **font)
@@ -184,14 +183,3 @@ def graph_ex(N_clients=30):
     fig.tight_layout()
 
     return Gph
-  
-def convert(a):
-  """
-converts from adjacency matrix to adjacency list
-  """
-    adjList = defaultdict(list)
-    for i in range(len(a)):
-        for j in range(len(a[i])):
-                       if a[i][j]== 1:
-                           adjList[i].append(j)
-    return adjList
