@@ -28,7 +28,7 @@ def main():
     parser.add_argument('--save_path', type=str, default='report', help='path to save results')
     parser.add_argument('--label_hetro', type=int, default=2, help='indicates label heterogeneity: 4 means each client only has 4 labels of the data')
     parser.add_argument('--Filter_sim', type=int, default=1, help='Number of filters to simulate')
-    parser.add_argument('--mu_param', type=int, default=10, help='The tuning parameter of the graph filter')
+    parser.add_argument('--mu_param', type=int, default=1, help='The tuning parameter of the graph filter')
     
     ##################################################
     parser.add_argument("-f", "--file", required=False) # this particular code is essential for the parser to work in google colab
@@ -45,7 +45,7 @@ def main():
       
     else:
       N_clients = args.N_clients
-      Gph = Gr.graph_ex(N_clients)
+      Gph = Gr.graph_ex(N_clients,args.mu_param)
 
 
     ## Loading data
