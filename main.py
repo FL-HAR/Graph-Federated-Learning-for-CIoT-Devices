@@ -22,11 +22,13 @@ def main():
     parser.add_argument('--batch_size', type=int, default=32, help='batch size for local training')
     parser.add_argument('--E', type=int, default=3, help='Local training rounds')
     parser.add_argument('--R', type=int, default=400, help='Total number of communication rounds in the framework')
-    parser.add_argument('--N_clients', type=int, default=20, help='number of clients in the framework') ## for the paper graph this must be set to 20
-    parser.add_argument('--paper_graph', type=str, default='Y', help='whether to use the graph used in the original paper or a random sensor graph')
+    parser.add_argument('--N_clients', type=int, default=100, help='number of clients in the framework') ## for the paper graph this must be set to 20
+    parser.add_argument('--paper_graph', type=str, default='N', help='whether to use the graph used in the original paper or a random sensor graph')
     parser.add_argument('--save_path', type=str, default='report', help='path to save results')
     parser.add_argument('--label_hetro', type=int, default=4, help='indicates label heterogeneity: 4 means each client only has 4 labels of the data')
-    parser.add_argument('--Filter_sim', type=int, default=4, help='Number of filters to simulate')
+    parser.add_argument('--Filter_sim', type=int, default=1, help='Number of filters to simulate')
+    parser.add_argument('--mu_param', type=int, default=10, help='The tuning parameter of the graph filter')
+    
     ##################################################
     parser.add_argument("-f", "--file", required=False) # this particular code is essential for the parser to work in google colab
     ##################################################
@@ -47,8 +49,8 @@ def main():
 
     ## Loading data
     emnist_train, emnist_test = tff.simulation.datasets.emnist.load_data()
-    dataset_train = restore_data_all(emnist_train,200)
-    dataset_test = restore_data_all(emnist_test,200)
+    dataset_train = restore_data_all(emnist_train,400)
+    dataset_test = restore_data_all(emnist_test,400)
     data_train_new, label_train_new, data_test_new, label_test_new = create_extreme_hetero_data(dataset_train,dataset_test,N_clients,args.label_hetro,24,8)
 
     ## preparing the settings
@@ -167,11 +169,11 @@ def main():
     ################# Fedfilt ###################################################### 
       for m in range(1,model_number):
         if m ==1:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,0.1,0) 
+          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,args.mu_param,0) 
         if m == 2:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,1,0)
+          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,0.1,0)
         if m == 3:
-          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,10,0)
+          G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,1,0)
         if m == 4:
           G_list[m] = Gr.soft_filt(G_list[m],Gph,Gr.h_s,100,0)
     ################################################################################
