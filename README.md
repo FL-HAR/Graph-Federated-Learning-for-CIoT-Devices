@@ -23,7 +23,7 @@ Please install the following packages before running ``` main.py``` .
 ## How to run
 Simply run the following code that specifies the report path, number of local updates, number of rounds, the graph used in the original paper, and label heterogeneity score.
 ```
-main.py --save_path 'report' --E 3  --R 400 --paper_graph 'Y' --label_hetro 5
+python main.py --save_path 'report' --E 3  --R 400 --paper_graph 'Y' --label_hetro 5
 ```
 
 # Citation
