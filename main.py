@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--E', type=int, default=3, help='Local training rounds')
     parser.add_argument('--R', type=int, default=400, help='Total number of communication rounds in the framework')
     parser.add_argument('--N_clients', type=int, default=20, help='number of clients in the framework') ## for the paper graph this must be set to 20
-    parser.add_argument('--paper_graph', type=str, default='N', help='whether to use the graph used in the original paper or a random sensor graph')
+    parser.add_argument('--paper_graph', type=str, default='Y', help='whether to use the graph used in the original paper or a random sensor graph')
     parser.add_argument('--save_path', type=str, default='report', help='path to save results')
     parser.add_argument('--label_hetro', type=int, default=4, help='indicates label heterogeneity: 4 means each client only has 4 labels of the data')
     parser.add_argument('--Filter_sim', type=int, default=1, help='Number of filters to simulate')
