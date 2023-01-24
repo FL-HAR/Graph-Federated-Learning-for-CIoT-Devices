@@ -181,8 +181,8 @@ def main():
     ########## FedFilt Evaluation ##################################################
       
       for m in range (1,model_number):
-        acc_Fedfilt = np.zeros(1) # N_active_client instead of 1
-        for client in range(1):
+        acc_Fedfilt = np.zeros(N_active_clients) # N_active_client instead of 1
+        for client in range(N_active_clients):
           global_var_flat = G_list[m][client,:]
           global_var = Gr.unflatten(global_var_flat,global_var)
           _,acc_Fedfilt[client] = evaluate(global_var,dataset_test,CNN(),client)
