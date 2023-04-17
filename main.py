@@ -72,7 +72,7 @@ def main():
     ## Building the models
     model_FedAvg  = CNN()
     model_Fedfilt = CNN()
-    optimizer_clients = tf.keras.optimizers.SGD(learning_rate=0.02)  
+    optimizer_clients = tf.keras.optimizers.legacy.SGD(learning_rate=0.02)  
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)                                                     
     model_FedAvg.compile(loss=loss,
                   optimizer=optimizer_clients,
