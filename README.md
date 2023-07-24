@@ -17,7 +17,7 @@
 ## Requirements
 Please install the following packages before running ``` main.py``` .
 ```
-!pip install tensorflow-federated==0.18.0
+!pip install tensorflow-federated
 !pip install pygsp==0.5.1
 ```
 ## How to run
