@@ -12,31 +12,41 @@ root = os.getcwd()
 
 
 def flatten(weights):
-  """
-Use to flatten the weights of the network
-  """
-  w = []
-  for l in weights:
-    if isinstance(l,collections.Iterable):
-      w = w + flatten(l)
-    else:
-      w = w + [l]
-  return w
+    """
+    Flatten the parameters into a vector.
 
-def unflatten(flat_w, old_w):
-  """
-Use to unflatten the weights of the network
-  """
-# """ flat_w : 1D array of weights (flattened).old_w : output of model.get_weights(). """
-  new_w = [ ]
-  
-  i = 0
-  for layer in old_w:
-    size = layer.size
-    new_w.append(flat_w[i:i+size].reshape(layer.shape))
-    i += size
+    Parameters:
+        weights (list of numpy arrays): The model weights.
 
-  return new_w 
+    Returns:
+        np.ndarray: A 1D numpy array containing all the flattened parameters.
+    """
+    return np.concatenate([w.flatten() for w in weights])
+
+
+def unflatten(flattened_parameters, weights):
+    """
+    Reconstruct the parameters from a flattened vector.
+
+    Parameters:
+        weights (list of numpy arrays): The model weights.
+        flattened_parameters (np.ndarray): A 1D numpy array containing the flattened parameters.
+
+    Returns:
+        list of numpy arrays: The reconstructed model weights in their original shape and data type.
+    """
+    reconstructed_weights = []
+    index = 0
+
+    for w in weights:
+        shape = w.shape
+        size = np.prod(shape)
+        flat_param = flattened_parameters[index:index + size]
+        reconstructed_param = flat_param.reshape(shape)
+        reconstructed_weights.append(reconstructed_param)
+        index += size
+
+    return reconstructed_weights
 
 def graph_ex(N_clients):
 
